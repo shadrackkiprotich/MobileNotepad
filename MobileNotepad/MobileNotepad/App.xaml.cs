@@ -13,7 +13,7 @@ namespace MobileNotepad
         {
             InitializeComponent();
 
-            MainPage = new MobileNotepad.MainPage();
+            MainPage = new NavigationPage(new NotesOverview());
         }
 
         protected override void OnStart()
