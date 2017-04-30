@@ -50,9 +50,11 @@ namespace MobileNotepad
         {
             var NewNote = new Note(this);
             Notes.Add(NewNote);
+            
             NoteStack.Children.Add(NewNote.getPlayButton());
             Content = new ScrollView { Content = NoteStack };
 
+            NewNote.StartEditing(sender, e);
             foreach (Note x in Notes)
             {
                 x.SetToEdit();

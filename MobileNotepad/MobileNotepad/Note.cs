@@ -12,7 +12,7 @@ namespace MobileNotepad
     {
         private String Text;
         private Button Play;
-        private Label Short;
+        private String Short;
         private Editor EditingSpace;
         private NotesOverview PageParent;
 
@@ -25,12 +25,8 @@ namespace MobileNotepad
                 Text="Empty"
             };
             Play.Clicked += StartEditing;
-
-
-            Short = new Label
-            {
-                Text = String.Empty
-            };
+            
+            Short = String.Empty;
 
             EditingSpace = new Editor
             {
@@ -41,7 +37,7 @@ namespace MobileNotepad
             PageParent = NotOv;
         }
 
-        async void StartEditing(object sender, EventArgs e)
+        public async void StartEditing(object sender, EventArgs e)
         {
             await PageParent.Navigation.PushAsync(new NotePage(this));
         }
@@ -61,15 +57,16 @@ namespace MobileNotepad
             Play.Clicked += StartEditing;
         }
 
-        void Delete(object sender, EventArgs e)
+        async void Delete(object sender, EventArgs e)
         {
-            PageParent.RemoveNote(this);
+            if (await PageParent.DisplayAlert("Warning!", "Are you sure you want to delete \"" + Short + "\"Note?", "Yes", "No"))
+                PageParent.RemoveNote(this);
         }
 
         void EditingCompleted(object sender, EventArgs e)
         {
             Text = EditingSpace.Text;
-            String tmp = String.Empty;
+            Short = String.Empty;
 
             bool isLonger = true;
             for (int i=0;i <20; i++)
@@ -79,11 +76,14 @@ namespace MobileNotepad
                     isLonger = false;
                     break;
                 }
-                tmp += Text[i];
+                if (Text[i] == '\n')
+                    Short += ' ';
+                else
+                    Short += Text[i];
             }
             if (isLonger)
-                tmp += "...";
-            Play.Text = tmp;
+                Short += "...";
+            Play.Text = Short;
         }
 
         public Button getPlayButton() { return Play; }
