@@ -17,7 +17,8 @@ namespace MobileNotepad
 
         private Button AddNote;
         private Button DeleteNote;
-        private bool DeleteNoteState;   //Edit or deleting
+        private bool DeleteNoteState;     //Edit or deleting
+
         public NotesOverview()
         {
             InitializeComponent();
@@ -34,7 +35,7 @@ namespace MobileNotepad
 
             DeleteNote = new Button
             {
-                Text = "Delete Note"
+                Text = "Delete Notes"
             };
             DeleteNote.Clicked += ClickDeleteButton;
             DeleteNoteState = true;
@@ -56,6 +57,8 @@ namespace MobileNotepad
             {
                 x.SetToEdit();
             }
+            DeleteNote.Text = "Delete Notes";
+            DeleteNoteState = true;
         }
 
         void ClickDeleteButton(object sender, EventArgs e)
@@ -67,6 +70,7 @@ namespace MobileNotepad
                 {
                     x.SetToDelete();
                 }
+                DeleteNote.Text = "Edit Notes";
             }
             else
             {
@@ -75,10 +79,11 @@ namespace MobileNotepad
                 {
                     x.SetToEdit();
                 }
+                DeleteNote.Text = "Delete Notes";
             }
         }
 
-        public void deleteNote(Note del)
+        public void RemoveNote(Note del)
         {
             Notes.Remove(del);
             RefreshScreen();
@@ -95,5 +100,7 @@ namespace MobileNotepad
             }
             Content = new ScrollView { Content = NoteStack };
         }
+
+        public bool getDeleteState() { return DeleteNoteState; }
     }
 }

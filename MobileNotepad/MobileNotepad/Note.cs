@@ -22,9 +22,10 @@ namespace MobileNotepad
 
             Play = new Button
             {
-                Text="Edit"
+                Text="Empty"
             };
             Play.Clicked += StartEditing;
+
 
             Short = new Label
             {
@@ -35,7 +36,7 @@ namespace MobileNotepad
             {
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
-            EditingSpace.TextChanged += Increase;
+            EditingSpace.Completed += EditingCompleted;
 
             PageParent = NotOv;
         }
@@ -44,25 +45,46 @@ namespace MobileNotepad
         {
             await PageParent.Navigation.PushAsync(new NotePage(this));
         }
-
-        void Increase(object sender, EventArgs e)
-        {
-
-        }
+        
 
         public void SetToDelete()
         {
+            Play.Clicked -= Delete;
             Play.Clicked -= StartEditing;
             Play.Clicked += Delete;
         }
 
-        void Delete(object sender, EventArgs e)
+        public void SetToEdit()
         {
-            PageParent.deleteNote(this);
-            
+            Play.Clicked -= StartEditing;
+            Play.Clicked -= Delete;
+            Play.Clicked += StartEditing;
         }
 
-        
+        void Delete(object sender, EventArgs e)
+        {
+            PageParent.RemoveNote(this);
+        }
+
+        void EditingCompleted(object sender, EventArgs e)
+        {
+            Text = EditingSpace.Text;
+            String tmp = String.Empty;
+
+            bool isLonger = true;
+            for (int i=0;i <20; i++)
+            {
+                if (i >= Text.Length)
+                {
+                    isLonger = false;
+                    break;
+                }
+                tmp += Text[i];
+            }
+            if (isLonger)
+                tmp += "...";
+            Play.Text = tmp;
+        }
 
         public Button getPlayButton() { return Play; }
         public Editor getEditingSpace() { return EditingSpace; }

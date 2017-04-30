@@ -29,7 +29,7 @@ namespace MobileNotepad
             edit = new Editor { VerticalOptions = LayoutOptions.FillAndExpand };
             edit.TextChanged += inc;
             edit.Completed += comp;
-            stack.Children.Add( edit );
+            stack.Children.Add( DataPointer.getEditingSpace() );
             Content = new ScrollView { Content = stack };
         }
 
