@@ -13,6 +13,7 @@ namespace MobileNotepad
     public partial class NotePage : ContentPage
     {
         private Note DataPointer;
+        private Editor edit;
 
         public NotePage(Note DtPtr)
         {
@@ -25,7 +26,22 @@ namespace MobileNotepad
                 txt += "hehheeee";
 
             var stack = new StackLayout();
-            stack.Children.Add( DataPointer.getEditingSpace() );
+            edit = new Editor { VerticalOptions = LayoutOptions.FillAndExpand };
+            edit.TextChanged += inc;
+            edit.Completed += comp;
+            stack.Children.Add( edit );
+            Content = new ScrollView { Content = stack };
+        }
+
+        void inc(object sender, EventArgs e)
+        {
+            edit.HeightRequest = 1;
+        }
+
+        void comp(object sender, EventArgs e)
+        {
+            var stack = new StackLayout();
+            stack.Children.Add(new Button { Text = "zal" });
             Content = new ScrollView { Content = stack };
         }
     }

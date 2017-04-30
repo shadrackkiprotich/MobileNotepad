@@ -35,6 +35,7 @@ namespace MobileNotepad
             {
                 VerticalOptions = LayoutOptions.FillAndExpand
             };
+            EditingSpace.TextChanged += Increase;
 
             PageParent = NotOv;
         }
@@ -44,9 +45,26 @@ namespace MobileNotepad
             await PageParent.Navigation.PushAsync(new NotePage(this));
         }
 
+        void Increase(object sender, EventArgs e)
+        {
 
+        }
 
-        public Button getPlay() { return Play; }
+        public void SetToDelete()
+        {
+            Play.Clicked -= StartEditing;
+            Play.Clicked += Delete;
+        }
+
+        void Delete(object sender, EventArgs e)
+        {
+            PageParent.deleteNote(this);
+            
+        }
+
+        
+
+        public Button getPlayButton() { return Play; }
         public Editor getEditingSpace() { return EditingSpace; }
     }
 }
