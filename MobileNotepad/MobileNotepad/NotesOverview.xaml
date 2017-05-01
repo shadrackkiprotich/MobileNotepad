@@ -2,4 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MobileNotepad.NotesOverview">
+
+    <StackLayout>
+        <Button x:Name="AddNote" Text="AddNote" Clicked="ClickAddNote"/>
+        <Button x:Name="DeleteNote" Text="Delete Notes" Clicked="ClickDeleteButton"/>
+        <ScrollView>
+            <StackLayout x:Name="NoteStack">
+        
+            </StackLayout>
+        </ScrollView>
+    </StackLayout>
 </ContentPage>

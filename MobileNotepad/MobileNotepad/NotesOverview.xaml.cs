@@ -12,38 +12,16 @@ namespace MobileNotepad
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class NotesOverview : ContentPage
     {
-        private StackLayout NoteStack;
         private List<Note> Notes;
-
-        private Button AddNote;
-        private Button DeleteNote;
         private bool DeleteNoteState;     //Edit or deleting
 
         public NotesOverview()
         {
             InitializeComponent();
            
-            NoteStack = new StackLayout();
             Notes = new List<Note>();
 
-            //Add Note Button
-            AddNote = new Button
-            {
-                Text = "Add Note"
-            };
-            AddNote.Clicked += ClickAddNote;
-
-            DeleteNote = new Button
-            {
-                Text = "Delete Notes"
-            };
-            DeleteNote.Clicked += ClickDeleteButton;
             DeleteNoteState = true;
-
-            NoteStack.Children.Add(AddNote);
-            NoteStack.Children.Add(DeleteNote);
-
-            Content = new ScrollView { Content = NoteStack };
         }
        
         void ClickAddNote(object sender, EventArgs e)
@@ -52,8 +30,7 @@ namespace MobileNotepad
             Notes.Add(NewNote);
             
             NoteStack.Children.Add(NewNote.getPlayButton());
-            Content = new ScrollView { Content = NoteStack };
-
+            
             NewNote.StartEditing(sender, e);
             foreach (Note x in Notes)
             {
@@ -88,20 +65,8 @@ namespace MobileNotepad
         public void RemoveNote(Note del)
         {
             Notes.Remove(del);
-            RefreshScreen();
-        }
-
-        void RefreshScreen()
-        {
-            NoteStack = new StackLayout();
-            NoteStack.Children.Add(AddNote);
-            NoteStack.Children.Add(DeleteNote);
-            foreach (Note x in Notes)
-            {
-                 NoteStack.Children.Add(x.getPlayButton());
-            }
-            Content = new ScrollView { Content = NoteStack };
-        }
+            NoteStack.Children.Remove(del.getPlayButton());
+         }       
 
         public bool getDeleteState() { return DeleteNoteState; }
     }

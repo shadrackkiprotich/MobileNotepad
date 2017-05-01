@@ -13,7 +13,6 @@ namespace MobileNotepad
         private String Text;
         private Button Play;
         private String Short;
-        private Editor EditingSpace;
         private NotesOverview PageParent;
 
         public Note(NotesOverview NotOv)
@@ -27,12 +26,6 @@ namespace MobileNotepad
             Play.Clicked += StartEditing;
             
             Short = String.Empty;
-
-            EditingSpace = new Editor
-            {
-                VerticalOptions = LayoutOptions.FillAndExpand
-            };
-            EditingSpace.Completed += EditingCompleted;
 
             PageParent = NotOv;
         }
@@ -62,31 +55,11 @@ namespace MobileNotepad
             if (await PageParent.DisplayAlert("Warning!", "Are you sure you want to delete \"" + Short + "\"Note?", "Yes", "No"))
                 PageParent.RemoveNote(this);
         }
-
-        void EditingCompleted(object sender, EventArgs e)
-        {
-            Text = EditingSpace.Text;
-            Short = String.Empty;
-
-            bool isLonger = true;
-            for (int i=0;i <20; i++)
-            {
-                if (i >= Text.Length)
-                {
-                    isLonger = false;
-                    break;
-                }
-                if (Text[i] == '\n')
-                    Short += ' ';
-                else
-                    Short += Text[i];
-            }
-            if (isLonger)
-                Short += "...";
-            Play.Text = Short;
-        }
-
+        
         public Button getPlayButton() { return Play; }
-        public Editor getEditingSpace() { return EditingSpace; }
+        public String getText() { return Text; }
+
+        public void setText(String arg) { Text = arg; }
+        public void setPlayButton(String arg) { Play.Text = arg; }
     }
 }

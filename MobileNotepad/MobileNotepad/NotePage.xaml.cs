@@ -13,7 +13,6 @@ namespace MobileNotepad
     public partial class NotePage : ContentPage
     {
         private Note DataPointer;
-        private Editor edit;
 
         public NotePage(Note DtPtr)
         {
@@ -25,24 +24,33 @@ namespace MobileNotepad
             for (int i = 0; i < 200; i++)
                 txt += "hehheeee";
 
-            var stack = new StackLayout();
-            edit = new Editor { VerticalOptions = LayoutOptions.FillAndExpand };
-            edit.TextChanged += inc;
-            edit.Completed += comp;
-            stack.Children.Add( DataPointer.getEditingSpace() );
-            Content = new ScrollView { Content = stack };
+            edit.Text = DataPointer.getText();
         }
 
-        void inc(object sender, EventArgs e)
+        void EditingCompleted(object sender, EventArgs e)
         {
-            edit.HeightRequest = 1;
-        }
+            if (string.IsNullOrEmpty(edit.Text))
+                return;
 
-        void comp(object sender, EventArgs e)
-        {
-            var stack = new StackLayout();
-            stack.Children.Add(new Button { Text = "zal" });
-            Content = new ScrollView { Content = stack };
+            DataPointer.setText(edit.Text);
+            String shorttext = String.Empty;
+
+            bool isLonger = true;
+            for (int i = 0; i < 20; i++)
+            {
+                if (i >= edit.Text.Length)
+                {
+                    isLonger = false;
+                    break;
+                }
+                if (edit.Text[i] == '\n')
+                    shorttext += ' ';
+                else
+                    shorttext += edit.Text[i];
+            }
+            if (isLonger)
+                shorttext += "...";
+            DataPointer.setPlayButton(shorttext);
         }
     }
 }
